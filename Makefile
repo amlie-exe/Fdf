@@ -3,7 +3,7 @@ NAME = fdf
 CC = gcc
 CFLAGS = -g -Wall -Wextra -Werror
 
-HEADER = -I./libft/ -I./minilibx-linux/
+HEADER = -I./includes/ -I./libft/ -I./minilibx-linux/
 
 #----------------------- LIBFT -----------------------
 
@@ -18,7 +18,7 @@ MINILIBX = $(MINILIBX_DIR)libmlx.a
 #---------------- SOURCES FILES (.c) -----------------
 
 SRCS_DIR = srcs/
-SRCS = main.c\
+SRCS = main.c \
 
 #---------- CONVERSION : FROM (.c) TO (.o) -----------
 
@@ -31,7 +31,7 @@ FULL_OBJS = $(addprefix $(OBJ_DIR), $(OBJS))
 all: $(NAME)
 
 $(NAME): $(FULL_OBJS) $(LIBFT) $(MINILIBX)
-	$(CC) $(CFLAGS) $(FULL_OBJS) $(LIBFT) $(MINILIBX) -o $(NAME)
+	$(CC) $(CFLAGS) $(FULL_OBJS) $(LIBFT) $(MINILIBX) -lXext -lX11 -lm -lz -o $(NAME)
 
 $(LIBFT):
 	make -C $(LIBFT_DIR)
@@ -57,7 +57,7 @@ clean:
 
 fclean: clean
 	make -C $(LIBFT_DIR) fclean
-	make -C $(MINILIBX_DIR) fclean
+	make -C $(MINILIBX_DIR) clean
 	rm -f $(NAME)
 
 re: fclean all
