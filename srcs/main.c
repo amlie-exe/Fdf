@@ -6,19 +6,8 @@
 /*   By: amhan <amhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 18:37:30 by amhan             #+#    #+#             */
-/*   Updated: 2025/07/30 18:21:43 by amhan            ###   ########.fr       */
+/*   Updated: 2025/08/01 15:30:47 by amhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-int	main(void)
-{
-	void	*mlx;
-	void	*mlx_win;
-
-	mlx = mlx_init();
-	mlx_win = mlx_new_window(mlx, 800, 600, "Fdf");
-	(void)mlx_win;
-	mlx_loop(mlx);
-}
