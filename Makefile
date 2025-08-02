@@ -19,6 +19,7 @@ MINILIBX = $(MINILIBX_DIR)libmlx.a
 
 SRCS_DIR = srcs/
 SRCS = main.c \
+	parsing.c \
 
 #---------- CONVERSION : FROM (.c) TO (.o) -----------
 

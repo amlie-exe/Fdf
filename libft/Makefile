@@ -47,6 +47,7 @@ SRCS_LIBFT = ft_isalpha.c \
 	 		ft_split.c \
 	 		ft_strmapi.c \
 	 		ft_striteri.c \
+			free_tab.c \
 
 SRCS_PRINTF = ft_printf/ft_printf.c \
               ft_printf/ft_print_c.c \

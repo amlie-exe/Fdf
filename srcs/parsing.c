@@ -6,15 +6,16 @@
 /*   By: amhan <amhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 15:29:32 by amhan             #+#    #+#             */
-/*   Updated: 2025/08/01 18:02:45 by amhan            ###   ########.fr       */
+/*   Updated: 2025/08/02 17:31:04 by amhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
+void	fill_data(t_map *map, char *filename);
+void	fill_data_line(t_map *map, int y, char *line);
 int		count_lines_y(char *filename);
 int		count_width_x(char *filename);
-void	free_tab(char **tab);
 
 t_map	*parse_map(char *filename)
 {
@@ -30,39 +31,85 @@ t_map	*parse_map(char *filename)
 		free(map);
 		return (NULL);
 	}
+	map->data_z = malloc(sizeof(int *) * map->height_y);
+	if (!map->data_z)
+	{
+		free(map);
+		return (NULL);
+	}
+	fill_data(map, filename);
+	return (map);
+}
+
+void	fill_data(t_map *map, char *filename)
+{
+	int		fd;
+	char	*line;
+	int		y;
+
+	fd = open(filename, O_RDONLY);
+	if (fd < 0)
+		return ;
+	y = 0;
+	while (y < map->height_y)
+	{
+		line = get_next_line(fd);
+		fill_data_line(map, y, line);
+		free(line);
+		y++;
+	}
+	close(fd);
+}
+
+void	fill_data_line(t_map *map, int y, char *line)
+{
+	char	**column;
+	int		x;
+
+	column = ft_split(line, ' ');
+	map->data_z[y] = malloc(sizeof(int) * map->width_x);
+	if (!map->data_z[y])
+		return ;
+	x = 0;
+	while (x < map->width_x)
+	{
+		map->data_z[y][x] = ft_atoi(column[x]);
+		x++;
+	}
+	free_tab(column);
 }
 
 int	count_lines_y(char *filename)
 {
-	int		map;
+	int		fd;
 	int		count;
 	char	*line;
 
 	count = 0;
-	map = open(filename, O_RDONLY);
-	if (map < 0)
+	fd = open(filename, O_RDONLY);
+	if (fd < 0)
 		return (-1);
-	while (line = get_next_line(map))
+	while ((line = get_next_line(fd)))
 	{
 		count++;
 		free(line);
 	}
-	close(map);
+	close(fd);
 	return (count);
 }
 
 int	count_width_x(char *filename)
 {
-	int		map;
+	int		fd;
 	int		i;
 	char	*line;
 	char	**column;
 
-	map = open(filename, O_RDONLY);
-	if (map < 0)
+	fd = open(filename, O_RDONLY);
+	if (fd < 0)
 		return (-1);
 	i = 0;
-	line = get_next_line(map);
+	line = get_next_line(fd);
 	if (!line)
 		return (-1);
 	column = ft_split(line, ' ');
@@ -70,19 +117,6 @@ int	count_width_x(char *filename)
 		i++;
 	free(line);
 	free_tab(column);
-	close(map);
+	close(fd);
 	return (i);
-}
-
-void	free_tab(char **tab)
-{
-	int i;
-
-	i = 0;
-	while (tab[i] != NULL)
-	{
-		free(tab[i]);
-		i++;
-	}
-	free(tab);
 }
