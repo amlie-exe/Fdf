@@ -6,7 +6,7 @@
 /*   By: amhan <amhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 15:29:32 by amhan             #+#    #+#             */
-/*   Updated: 2025/08/02 17:31:04 by amhan            ###   ########.fr       */
+/*   Updated: 2025/08/03 17:33:51 by amhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	fill_data_line(t_map *map, int y, char *line)
 	if (!map->data_z[y])
 		return ;
 	x = 0;
-	while (x < map->width_x)
+	while ((x < map->width_x) && column[x])
 	{
 		map->data_z[y][x] = ft_atoi(column[x]);
 		x++;
@@ -111,7 +111,10 @@ int	count_width_x(char *filename)
 	i = 0;
 	line = get_next_line(fd);
 	if (!line)
+	{
+		close(fd);
 		return (-1);
+	}
 	column = ft_split(line, ' ');
 	while (column[i])
 		i++;
