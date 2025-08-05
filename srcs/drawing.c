@@ -6,7 +6,7 @@
 /*   By: amhan <amhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 16:48:52 by amhan             #+#    #+#             */
-/*   Updated: 2025/08/05 20:04:54 by amhan            ###   ########.fr       */
+/*   Updated: 2025/08/05 22:11:11 by amhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	draw_lines(t_point a, t_point b, t_data *img, t_view *view);
 void	draw_map_row(t_map *map, t_data *img, int y, t_view *view);
 void	my_pixel_put(t_data *data, int x, int y, unsigned int color);
+void	calculate_bounds(t_map *map, t_view *view, t_bounds *bounds);
 
 t_point	project_iso(int x, int y, int z, t_view *view)
 {
@@ -62,22 +63,32 @@ void	draw_lines(t_point a, t_point b, t_data *img, t_view *view)
 
 void	draw_map_grid(t_map *map, t_data *img)
 {
-	int		y;
-	t_view	view;
-	float	zoom_x;
-	float	zoom_y;
+	int			y;
+	t_view		view;
+	t_bounds	bounds;
 
-	zoom_x = (float)WINDOW_WIDTH / map->width_x;
-	zoom_y = (float)WINDOW_HEIGHT / map->height_y;
-	if (zoom_x < zoom_y)
-		view.zoom = zoom_x * 0.7;
+	float map_width, map_height;
+	float scale_x, scale_y;
+	view.angle = 0.523599;
+	view.zoom = 1;
+	view.offset_x = 0;
+	view.offset_y = 0;
+	calculate_bounds(map, &view, &bounds);
+	map_width = bounds.max_x - bounds.min_x;
+	map_height = bounds.max_y - bounds.min_y;
+	scale_x = (WINDOW_WIDTH * 0.8) / map_width;
+	scale_y = (WINDOW_HEIGHT * 0.8) / map_height;
+	if (scale_x < scale_y)
+		view.zoom = scale_x;
 	else
-		view.zoom = zoom_y * 0.7;
+		view.zoom = scale_y;
 	if (view.zoom < 1)
 		view.zoom = 1;
-	view.offset_x = 1920 / 3;
-	view.offset_y = 1080 / 3;
-	view.angle = 0.523599;
+	calculate_bounds(map, &view, &bounds);
+	map_width = bounds.max_x - bounds.min_x;
+	map_height = bounds.max_y - bounds.min_y;
+	view.offset_x = (WINDOW_WIDTH - map_width) / 2 - bounds.min_x;
+	view.offset_y = (WINDOW_HEIGHT - map_height) / 2 - bounds.min_y;
 	y = 0;
 	while (y < map->height_y)
 	{
@@ -115,13 +126,41 @@ void	draw_map_row(t_map *map, t_data *img, int y, t_view *view)
 
 void	my_pixel_put(t_data *data, int x, int y, unsigned int color)
 {
-	char *dst;
+	char	*dst;
 
 	if (x < 0 || x >= 1920 || y < 0 || y >= 1080)
 		return ;
-
 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	// ^ adresse de dst : determine la position (les coordonnes (x, y))
 	*(unsigned int *)dst = color;
-	// ^ valeur a l'adresse dst : on veut la couleur qui se trouve a la bonne coordonnee
+}
+
+void	calculate_bounds(t_map *map, t_view *view, t_bounds *bounds)
+{
+	t_point	projected;
+
+	int x, y;
+	projected = project_iso(0, 0, map->data_z[0][0], view);
+	bounds->min_x = projected.x;
+	bounds->max_x = projected.x;
+	bounds->min_y = projected.y;
+	bounds->max_y = projected.y;
+	y = 0;
+	while (y < map->height_y)
+	{
+		x = 0;
+		while (x < map->width_x)
+		{
+			projected = project_iso(x, y, map->data_z[y][x], view);
+			if (projected.x < bounds->min_x)
+				bounds->min_x = projected.x;
+			if (projected.x > bounds->max_x)
+				bounds->max_x = projected.x;
+			if (projected.y < bounds->min_y)
+				bounds->min_y = projected.y;
+			if (projected.y > bounds->max_y)
+				bounds->max_y = projected.y;
+			x++;
+		}
+		y++;
+	}
 }

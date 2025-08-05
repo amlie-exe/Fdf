@@ -6,7 +6,7 @@
 /*   By: amhan <amhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 13:42:29 by amhan             #+#    #+#             */
-/*   Updated: 2025/08/05 19:51:37 by amhan            ###   ########.fr       */
+/*   Updated: 2025/08/05 22:06:16 by amhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 # include <stdio.h>
 # include <unistd.h>
 
-# define WINDOW_WIDTH 1366
-# define WINDOW_HEIGHT 768
+# define WINDOW_WIDTH 1920
+# define WINDOW_HEIGHT 1080
 
 typedef struct s_map
 {
@@ -43,8 +43,15 @@ typedef struct s_view
 	int		offset_x;
 	int		offset_y;
 	float	angle;
-	float	z_scale;
 }			t_view;
+
+typedef struct s_bounds
+{
+	float	min_x;
+	float	max_x;
+	float	min_y;
+	float	max_y;
+}			t_bounds;
 
 typedef struct s_data
 {
@@ -65,6 +72,6 @@ int			is_line_data(char *line);
 t_list		*read_file_to_list(char *filename);
 int			get_width_from_line(char *line);
 void		fill_data_from_list(t_map *map, t_list *file_content);
-int			get_z_range(t_map *map);
+void		calculate_bounds(t_map *map, t_view *view, t_bounds *bounds);
 
 #endif
