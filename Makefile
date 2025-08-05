@@ -20,6 +20,8 @@ MINILIBX = $(MINILIBX_DIR)libmlx.a
 SRCS_DIR = srcs/
 SRCS = main.c \
 	parsing.c \
+	drawing.c \
+	utils.c \
 
 #---------- CONVERSION : FROM (.c) TO (.o) -----------
 
@@ -35,7 +37,7 @@ $(NAME): $(FULL_OBJS) $(LIBFT) $(MINILIBX)
 	$(CC) $(CFLAGS) $(FULL_OBJS) $(LIBFT) $(MINILIBX) -lXext -lX11 -lm -lz -o $(NAME)
 
 $(LIBFT):
-	make -C $(LIBFT_DIR)
+	make -C $(LIBFT_DIR) bonus
 
 $(MINILIBX):
 	make -C $(MINILIBX_DIR)
