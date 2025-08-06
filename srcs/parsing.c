@@ -6,7 +6,7 @@
 /*   By: amhan <amhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 15:29:32 by amhan             #+#    #+#             */
-/*   Updated: 2025/08/05 18:36:31 by amhan            ###   ########.fr       */
+/*   Updated: 2025/08/06 17:59:12 by amhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,15 @@ t_map	*parse_map(char *filename)
 		return (NULL);
 	map = malloc(sizeof(t_map));
 	if (!map)
+	{
+		ft_lstclear(&file_content, free);
 		return (NULL);
+	}
 	map->height_y = ft_lstsize(file_content);
 	map->width_x = get_width_from_line((char *)file_content->content);
 	map->data_z = malloc(sizeof(int *) * map->height_y);
 	fill_data_from_list(map, file_content);
+	ft_lstclear(&file_content, free);
 	return (map);
 }
 
@@ -62,8 +66,11 @@ t_list	*read_file_to_list(char *filename)
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 		return (NULL);
-	while ((line = get_next_line(fd)))
+	while (1)
 	{
+		line = get_next_line(fd);
+		if (!line)
+			break ;
 		new_node = ft_lstnew(line);
 		if (!new_node)
 		{

@@ -21,6 +21,7 @@ SRCS_DIR = srcs/
 SRCS = main.c \
 	parsing.c \
 	drawing.c \
+	bounds.c \
 	utils.c \
 
 #---------- CONVERSION : FROM (.c) TO (.o) -----------

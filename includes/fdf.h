@@ -6,7 +6,7 @@
 /*   By: amhan <amhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 13:42:29 by amhan             #+#    #+#             */
-/*   Updated: 2025/08/05 22:06:16 by amhan            ###   ########.fr       */
+/*   Updated: 2025/08/06 17:42:13 by amhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@
 
 # define WINDOW_WIDTH 1920
 # define WINDOW_HEIGHT 1080
+
+# define KEY_ESC 65307
+# define ON_DESTROY 17
 
 typedef struct s_map
 {
@@ -62,16 +65,43 @@ typedef struct s_data
 	int		endian;
 }			t_data;
 
-t_map		*parse_map(char *filename);
-void		free_tab(char **tab);
-t_point		project_iso(int x, int y, int z, t_view *view);
+typedef struct s_line
+{
+	float	x;
+	float	y;
+	float	dx;
+	float	dy;
+	int		steps;
+}			t_line;
+
+typedef struct s_fdf
+{
+	void	*mlx;
+	void	*win;
+	t_data	img;
+	t_map	*map;
+	t_view	view;
+}			t_fdf;
+
 void		draw_lines(t_point a, t_point b, t_data *img, t_view *view);
-void		draw_map_row(t_map *map, t_data *img, int y, t_view *view);
+void		plot_line(t_line *line, t_data *img, t_view *view);
 void		draw_map_grid(t_map *map, t_data *img);
+t_view		setup_view(t_map *map);
+void		draw_map_row(t_map *map, t_data *img, int y, t_view *view);
+int			render_frame(void *param);
+int			close_program(t_fdf *fdf);
+int			expose_hook(t_fdf *fdf);
+int			key_hook(int keycode, t_fdf *fdf);
+t_map		*parse_map(char *filename);
 int			is_line_data(char *line);
 t_list		*read_file_to_list(char *filename);
 int			get_width_from_line(char *line);
 void		fill_data_from_list(t_map *map, t_list *file_content);
+void		free_map(t_map *map);
+t_point		project_iso(int x, int y, int z, t_view *view);
+void		my_pixel_put(t_data *data, int x, int y, unsigned int color);
 void		calculate_bounds(t_map *map, t_view *view, t_bounds *bounds);
+void		init_bounds(t_map *map, t_view *view, t_bounds *bounds);
+void		update_bounds(t_point projected, t_bounds *bounds);
 
 #endif
