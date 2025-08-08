@@ -6,15 +6,15 @@
 /*   By: amhan <amhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 16:48:52 by amhan             #+#    #+#             */
-/*   Updated: 2025/08/06 18:08:36 by amhan            ###   ########.fr       */
+/*   Updated: 2025/08/08 17:51:46 by amhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
+void	my_pixel_put(t_data *data, int x, int y, unsigned int color);
 void	plot_line(t_line *line, t_data *img, t_view *view);
 void	draw_map_grid(t_map *map, t_data *img);
-t_view	setup_view(t_map *map);
 void	draw_map_row(t_map *map, t_data *img, int y, t_view *view);
 
 void	draw_lines(t_point a, t_point b, t_data *img, t_view *view)
@@ -38,6 +38,16 @@ void	draw_lines(t_point a, t_point b, t_data *img, t_view *view)
 	line.x = a.x;
 	line.y = a.y;
 	plot_line(&line, img, view);
+}
+
+void	my_pixel_put(t_data *data, int x, int y, unsigned int color)
+{
+	char	*dst;
+
+	if (x < 0 || x >= 1920 || y < 0 || y >= 1080)
+		return ;
+	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+	*(unsigned int *)dst = color;
 }
 
 void	plot_line(t_line *line, t_data *img, t_view *view)
@@ -67,32 +77,6 @@ void	draw_map_grid(t_map *map, t_data *img)
 		draw_map_row(map, img, y, &view);
 		y++;
 	}
-}
-
-t_view	setup_view(t_map *map)
-{
-	t_view		view;
-	t_bounds	bounds;
-	float		map_width;
-	float		map_height;
-
-	view.angle = 0.523599;
-	view.zoom = 1;
-	view.offset_x = 0;
-	view.offset_y = 0;
-	calculate_bounds(map, &view, &bounds);
-	map_width = bounds.max_x - bounds.min_x;
-	map_height = bounds.max_y - bounds.min_y;
-	view.zoom = fmin((WINDOW_WIDTH * 0.8) / map_width, (WINDOW_HEIGHT * 0.8)
-			/ map_height);
-	if (view.zoom < 1)
-		view.zoom = 1;
-	calculate_bounds(map, &view, &bounds);
-	map_width = bounds.max_x - bounds.min_x;
-	map_height = bounds.max_y - bounds.min_y;
-	view.offset_x = (WINDOW_WIDTH - map_width) / 2 - bounds.min_x;
-	view.offset_y = (WINDOW_HEIGHT - map_height) / 2 - bounds.min_y;
-	return (view);
 }
 
 void	draw_map_row(t_map *map, t_data *img, int y, t_view *view)

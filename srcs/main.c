@@ -6,13 +6,12 @@
 /*   By: amhan <amhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 18:37:30 by amhan             #+#    #+#             */
-/*   Updated: 2025/08/06 17:04:17 by amhan            ###   ########.fr       */
+/*   Updated: 2025/08/08 17:44:52 by amhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	render_frame(void *param);
 int	close_program(t_fdf *fdf);
 int	expose_hook(t_fdf *fdf);
 int	key_hook(int keycode, t_fdf *fdf);
@@ -41,13 +40,10 @@ int	main(int ac, char **av)
 	return (0);
 }
 
-int	render_frame(void *param)
+int	key_hook(int keycode, t_fdf *fdf)
 {
-	t_fdf	*fdf;
-
-	fdf = (t_fdf *)param;
-	draw_map_grid(fdf->map, &fdf->img);
-	mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img.img, 0, 0);
+	if (keycode == KEY_ESC)
+		close_program(fdf);
 	return (0);
 }
 
@@ -70,9 +66,3 @@ int	expose_hook(t_fdf *fdf)
 	return (0);
 }
 
-int	key_hook(int keycode, t_fdf *fdf)
-{
-	if (keycode == KEY_ESC)
-		close_program(fdf);
-	return (0);
-}

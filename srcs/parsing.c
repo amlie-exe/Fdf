@@ -6,13 +6,12 @@
 /*   By: amhan <amhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 15:29:32 by amhan             #+#    #+#             */
-/*   Updated: 2025/08/06 17:59:12 by amhan            ###   ########.fr       */
+/*   Updated: 2025/08/08 18:02:27 by amhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int		is_line_data(char *line);
 t_list	*read_file_to_list(char *filename);
 int		get_width_from_line(char *line);
 void	fill_data_from_list(t_map *map, t_list *file_content);
@@ -37,22 +36,6 @@ t_map	*parse_map(char *filename)
 	fill_data_from_list(map, file_content);
 	ft_lstclear(&file_content, free);
 	return (map);
-}
-
-int	is_line_data(char *line)
-{
-	int	i;
-
-	if (!line)
-		return (0);
-	i = 0;
-	while (line[i])
-	{
-		if (line[i] != ' ' && line[i] != '\n' && line[i] != '\t')
-			return (1);
-		i++;
-	}
-	return (0);
 }
 
 t_list	*read_file_to_list(char *filename)

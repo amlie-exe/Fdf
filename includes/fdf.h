@@ -6,7 +6,7 @@
 /*   By: amhan <amhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 13:42:29 by amhan             #+#    #+#             */
-/*   Updated: 2025/08/08 15:47:30 by amhan            ###   ########.fr       */
+/*   Updated: 2025/08/08 17:45:01 by amhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,12 +88,10 @@ void		plot_line(t_line *line, t_data *img, t_view *view);
 void		draw_map_grid(t_map *map, t_data *img);
 t_view		setup_view(t_map *map);
 void		draw_map_row(t_map *map, t_data *img, int y, t_view *view);
-int			render_frame(void *param);
 int			close_program(t_fdf *fdf);
 int			expose_hook(t_fdf *fdf);
 int			key_hook(int keycode, t_fdf *fdf);
 t_map		*parse_map(char *filename);
-int			is_line_data(char *line);
 t_list		*read_file_to_list(char *filename);
 int			get_width_from_line(char *line);
 void		fill_data_from_list(t_map *map, t_list *file_content);
