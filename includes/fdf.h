@@ -6,7 +6,7 @@
 /*   By: amhan <amhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 13:42:29 by amhan             #+#    #+#             */
-/*   Updated: 2025/08/08 17:45:01 by amhan            ###   ########.fr       */
+/*   Updated: 2025/08/08 18:54:44 by amhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # define WINDOW_WIDTH 1920
 # define WINDOW_HEIGHT 1080
 
-# define KEY_ESC 65307
+# define KEY_ESC 0xff1b
 # define ON_DESTROY 17
 
 typedef struct s_map
