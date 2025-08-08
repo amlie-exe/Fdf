@@ -6,7 +6,7 @@
 /*   By: amhan <amhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 13:42:29 by amhan             #+#    #+#             */
-/*   Updated: 2025/08/06 17:42:13 by amhan            ###   ########.fr       */
+/*   Updated: 2025/08/08 15:47:30 by amhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,29 +33,6 @@ typedef struct s_map
 	int		**data_z;
 }			t_map;
 
-typedef struct s_point
-{
-	int		x;
-	int		y;
-	int		z;
-}			t_point;
-
-typedef struct s_view
-{
-	int		zoom;
-	int		offset_x;
-	int		offset_y;
-	float	angle;
-}			t_view;
-
-typedef struct s_bounds
-{
-	float	min_x;
-	float	max_x;
-	float	min_y;
-	float	max_y;
-}			t_bounds;
-
 typedef struct s_data
 {
 	void	*img;
@@ -65,14 +42,13 @@ typedef struct s_data
 	int		endian;
 }			t_data;
 
-typedef struct s_line
+typedef struct s_view
 {
-	float	x;
-	float	y;
-	float	dx;
-	float	dy;
-	int		steps;
-}			t_line;
+	int		zoom;
+	int		offset_x;
+	int		offset_y;
+	float	angle;
+}			t_view;
 
 typedef struct s_fdf
 {
@@ -82,6 +58,30 @@ typedef struct s_fdf
 	t_map	*map;
 	t_view	view;
 }			t_fdf;
+
+typedef struct s_point
+{
+	int		x;
+	int		y;
+	int		z;
+}			t_point;
+
+typedef struct s_bounds
+{
+	float	min_x;
+	float	max_x;
+	float	min_y;
+	float	max_y;
+}			t_bounds;
+
+typedef struct s_line
+{
+	float	x;
+	float	y;
+	float	dx;
+	float	dy;
+	int		steps;
+}			t_line;
 
 void		draw_lines(t_point a, t_point b, t_data *img, t_view *view);
 void		plot_line(t_line *line, t_data *img, t_view *view);
