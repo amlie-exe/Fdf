@@ -6,7 +6,7 @@
 /*   By: amhan <amhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 18:37:30 by amhan             #+#    #+#             */
-/*   Updated: 2025/08/08 17:44:52 by amhan            ###   ########.fr       */
+/*   Updated: 2025/08/11 11:30:59 by amhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,3 @@ int	expose_hook(t_fdf *fdf)
 	mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img.img, 0, 0);
 	return (0);
 }
-

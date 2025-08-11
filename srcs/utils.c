@@ -6,7 +6,7 @@
 /*   By: amhan <amhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 19:20:57 by amhan             #+#    #+#             */
-/*   Updated: 2025/08/08 17:50:24 by amhan            ###   ########.fr       */
+/*   Updated: 2025/08/11 11:31:09 by amhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,3 @@ t_point	project_iso(int x, int y, int z, t_view *view)
 	p.y = ((x + y) * sin(view->angle) - z) * view->zoom;
 	return (p);
 }
-
